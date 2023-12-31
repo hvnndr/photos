@@ -11,8 +11,11 @@ def create_pdf(image_folder_path, output_filename):
     canvas_heigth = canvas_dimensions[1]
     canvas_width = canvas_dimensions[0]
     c = canvas.Canvas(output_filename, pagesize=canvas_dimensions)
-    margin = 0.5 * inch
-    space_between_images = 0.8 * inch
+    c.setTitle("Sample ReportLab PDF")
+    font_size = 8
+    c.setFont("Helvetica", font_size)
+    margin = 0.2 * inch
+    space_between_images = 0.2 * inch
 
     workspace_width = canvas_width - 2 * margin
 
@@ -36,13 +39,22 @@ def create_pdf(image_folder_path, output_filename):
         img = ImageReader(img_path)
 
         # c.drawImage(img, x_position, y_position, width=image_width, preserveAspectRatio=True)
-        c.drawImage(img, x_position, y_position, width=image_width, height=image_height, preserveAspectRatio=True, anchor='n')
+        c.drawImage(img, x_position, y_position, width=image_width, height=image_height, preserveAspectRatio=True, anchor='s')
 
-        text_x_position = x_position
+        image_caption = f'{image_file_name}'
+
+        image_caption_width = c.stringWidth(image_caption)
+
+        text_x_position = x_position + ((image_width - image_caption_width) / 2)
         text_y_position = y_position - 0.2 * inch
 
-        c.drawString(text_x_position, text_y_position, f'{image_file_name}')
+        c.drawString(text_x_position, text_y_position, image_caption)
+
     c.save()
 
 
-create_pdf(image_folder_path='./ft', output_filename='teste_451.pdf')
+create_pdf(
+    image_folder_path='./ft',
+    output_filename='teste_451.pdf'
+    # quantas fotos por linha
+)
