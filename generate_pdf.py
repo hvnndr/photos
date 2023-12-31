@@ -12,12 +12,7 @@ def create_pdf(image_folder_path, output_filename):
     canvas_width = canvas_dimensions[0]
     c = canvas.Canvas(output_filename, pagesize=canvas_dimensions)
     margin = 0.5 * inch
-
-
-
-
-
-    space_between_images = 0.2 * inch
+    space_between_images = 0.8 * inch
 
     workspace_width = canvas_width - 2 * margin
 
@@ -43,9 +38,11 @@ def create_pdf(image_folder_path, output_filename):
         # c.drawImage(img, x_position, y_position, width=image_width, preserveAspectRatio=True)
         c.drawImage(img, x_position, y_position, width=image_width, height=image_height, preserveAspectRatio=True, anchor='n')
 
+        text_x_position = x_position
+        text_y_position = y_position - 0.2 * inch
 
+        c.drawString(text_x_position, text_y_position, f'{image_file_name}')
     c.save()
-
 
 
 create_pdf(image_folder_path='./ft', output_filename='teste_451.pdf')
