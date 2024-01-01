@@ -4,8 +4,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.utils import ImageReader
 from PIL import Image, ImageOps
-from ironpdf import *
-
+# from ironpdf import *
 
 
 def get_image_files_list(image_folder_path):
@@ -22,12 +21,12 @@ def break_page(wh, ih, sbi, ds):
 def create_pdf(image_folder_path, output_filename):
     canvas_dimensions = A4
     font_size = 8
-    margin = 0.2 * inch
-    space_between_images = 0.2 * inch
-    images_per_line = 6
-    space_between_lines = 0.5 * inch
-    quality = 10
-    description_space = 0.2 * inch
+    margin = 0.1 * inch
+    space_between_images = 0.25 * inch
+    images_per_line = 4
+    space_between_lines = 0.2 * inch
+    quality = 50
+    description_space = 0.1 * inch
 
     canvas_heigth = canvas_dimensions[1]
     canvas_width = canvas_dimensions[0]
@@ -66,7 +65,7 @@ def create_pdf(image_folder_path, output_filename):
         original_image.save('./compressed.jpg', quality=quality, )
         img = ImageReader('./compressed.jpg')
         c.drawImage(img, x_position, y_position, width=image_width, height=image_height, preserveAspectRatio=True,
-                    anchor='s')
+                    anchor='c')
 
         image_caption = f'{image_file_name}'
         image_caption_width = c.stringWidth(image_caption)
@@ -77,22 +76,20 @@ def create_pdf(image_folder_path, output_filename):
 
     c.save()
 
+#
+# def compress_pdf():
+#     pdf = PdfDocument("normal.pdf")
+#     pdf.CompressImages(50)
+#     pdf.SaveAs("normal.pdf")
 
-def compress_pdf():
-    pdf = PdfDocument("normal.pdf")
-    pdf.CompressImages(50)
-    pdf.SaveAs("normal.pdf")
-
-# create_pdf(
-#     image_folder_path='normal',
-#     output_filename='normal.pdf'
-# )
-
-compress_pdf()
-
+create_pdf(
+    image_folder_path='edit',
+    output_filename='edit.pdf'
+)
 
 # ou diminuir a qualidade do pdf
 # criar tmp e deletar
 # reescrever codigo mais estruturado com POO
 # mostrar porcentagem gerada no pdf
 # mostrar porcentagem de compressao
+# botar em thread para ser mais rapido
