@@ -24,16 +24,22 @@ def create_pdf(image_folder_path, output_filename):
     image_files_list = [f for f in os.listdir(image_folder_path)
                    if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
 
-    for index, image_file_name in enumerate(image_files_list):
-        image_height = each_image_space
-        image_width = each_image_space
+    image_height = each_image_space
+    image_width = each_image_space
+    x_position = margin
+    y_position = canvas_dimensions[1] - margin - image_height
+    space_between_lines = 0.5 * inch
 
-        if index % 5 == 0:
-            x_position = margin
+    for index, image_file_name in enumerate(image_files_list):
+
+        if index == 0:
             y_position = canvas_dimensions[1] - margin - image_height
         else:
-            x_position += image_width + space_between_images
-            y_position = canvas_dimensions[1] - margin - image_height
+            if index % 5 == 0:
+                y_position -= image_height + space_between_lines
+                x_position = margin
+            else:
+                x_position += image_width + space_between_images
 
         img_path = os.path.join(image_folder_path, image_file_name)
         img = ImageReader(img_path)
@@ -50,11 +56,19 @@ def create_pdf(image_folder_path, output_filename):
 
         c.drawString(text_x_position, text_y_position, image_caption)
 
+        print(f'OK: {image_file_name}')
+
     c.save()
 
 
 create_pdf(
-    image_folder_path='./ft',
-    output_filename='teste_451.pdf'
-    # quantas fotos por linha
+    image_folder_path='./fotos',
+    output_filename='fotos.pdf'
 )
+
+
+
+# determinar quantas fotos por linha
+# diminuir a qualidade da imagem
+# ou diminuir a qualidade do pdf
+
